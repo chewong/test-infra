@@ -122,37 +122,43 @@ type KubernetesAddon struct {
 }
 
 type KubernetesConfig struct {
-	CustomWindowsPackageURL          string            `json:"customWindowsPackageURL,omitempty"`
-	CustomHyperkubeImage             string            `json:"customHyperkubeImage,omitempty"`
-	CustomCcmImage                   string            `json:"customCcmImage,omitempty"` // Image for cloud-controller-manager
-	UseCloudControllerManager        *bool             `json:"useCloudControllerManager,omitempty"`
-	NetworkPlugin                    string            `json:"networkPlugin,omitempty"`
-	PrivateAzureRegistryServer       string            `json:"privateAzureRegistryServer,omitempty"`
-	AzureCNIURLLinux                 string            `json:"azureCNIURLLinux,omitempty"`
-	AzureCNIURLWindows               string            `json:"azureCNIURLWindows,omitempty"`
-	Addons                           []KubernetesAddon `json:"addons,omitempty"`
-	NetworkPolicy                    string            `json:"networkPolicy,omitempty"`
-	CloudProviderRateLimitQPS        float64           `json:"cloudProviderRateLimitQPS,omitempty"`
-	CloudProviderRateLimitBucket     int               `json:"cloudProviderRateLimitBucket,omitempty"`
-	APIServerConfig                  map[string]string `json:"apiServerConfig,omitempty"`
-	KubernetesImageBase              string            `json:"kubernetesImageBase,omitempty"`
-	ControllerManagerConfig          map[string]string `json:"controllerManagerConfig,omitempty"`
-	KubeletConfig                    map[string]string `json:"kubeletConfig,omitempty"`
-	SchedulerConfig                  map[string]string `json:"schedulerConfig,omitempty"`
-	KubeProxyMode                    string            `json:"kubeProxyMode,omitempty"`
-	LoadBalancerSku                  string            `json:"loadBalancerSku,omitempty"`
-	ExcludeMasterFromStandardLB      *bool             `json:"excludeMasterFromStandardLB,omitempty"`
-	ServiceCidr                      string            `json:"serviceCidr,omitempty"`
-	DNSServiceIP                     string            `json:"dnsServiceIP,omitempty"`
-	OutboundRuleIdleTimeoutInMinutes int32             `json:"outboundRuleIdleTimeoutInMinutes,omitempty"`
-	ClusterSubnet                    string            `json:"clusterSubnet,omitempty"`
-	CustomKubeAPIServerImage         string            `json:"customKubeAPIServerImage,omitempty"`
-	CustomKubeControllerManagerImage string            `json:"customKubeControllerManagerImage,omitempty"`
-	CustomKubeProxyImage             string            `json:"customKubeProxyImage,omitempty"`
-	CustomKubeSchedulerImage         string            `json:"customKubeSchedulerImage,omitempty"`
-	CustomKubeBinaryURL              string            `json:"customKubeBinaryURL,omitempty"`
-	UseManagedIdentity               *bool             `json:"useManagedIdentity,omitempty"`
-	UserAssignedID                   string            `json:"userAssignedID,omitempty"`
+	CustomWindowsPackageURL          string                `json:"customWindowsPackageURL,omitempty"`
+	CustomHyperkubeImage             string                `json:"customHyperkubeImage,omitempty"`
+	CustomCcmImage                   string                `json:"customCcmImage,omitempty"` // Image for cloud-controller-manager
+	UseCloudControllerManager        *bool                 `json:"useCloudControllerManager,omitempty"`
+	NetworkPlugin                    string                `json:"networkPlugin,omitempty"`
+	PrivateAzureRegistryServer       string                `json:"privateAzureRegistryServer,omitempty"`
+	AzureCNIURLLinux                 string                `json:"azureCNIURLLinux,omitempty"`
+	AzureCNIURLWindows               string                `json:"azureCNIURLWindows,omitempty"`
+	Addons                           []KubernetesAddon     `json:"addons,omitempty"`
+	NetworkPolicy                    string                `json:"networkPolicy,omitempty"`
+	CloudProviderRateLimitQPS        float64               `json:"cloudProviderRateLimitQPS,omitempty"`
+	CloudProviderRateLimitBucket     int                   `json:"cloudProviderRateLimitBucket,omitempty"`
+	APIServerConfig                  map[string]string     `json:"apiServerConfig,omitempty"`
+	KubernetesImageBase              string                `json:"kubernetesImageBase,omitempty"`
+	ControllerManagerConfig          map[string]string     `json:"controllerManagerConfig,omitempty"`
+	KubeletConfig                    map[string]string     `json:"kubeletConfig,omitempty"`
+	SchedulerConfig                  map[string]string     `json:"schedulerConfig,omitempty"`
+	KubeProxyMode                    string                `json:"kubeProxyMode,omitempty"`
+	LoadBalancerSku                  string                `json:"loadBalancerSku,omitempty"`
+	ExcludeMasterFromStandardLB      *bool                 `json:"excludeMasterFromStandardLB,omitempty"`
+	ServiceCidr                      string                `json:"serviceCidr,omitempty"`
+	DNSServiceIP                     string                `json:"dnsServiceIP,omitempty"`
+	OutboundRuleIdleTimeoutInMinutes int32                 `json:"outboundRuleIdleTimeoutInMinutes,omitempty"`
+	ClusterSubnet                    string                `json:"clusterSubnet,omitempty"`
+	Components                       []KubernetesComponent `json:"components,omitempty"`
+	CustomKubeBinaryURL              string                `json:"customKubeBinaryURL,omitempty"`
+	UseManagedIdentity               *bool                 `json:"useManagedIdentity,omitempty"`
+	UserAssignedID                   string                `json:"userAssignedID,omitempty"`
+}
+
+// KubernetesComponent defines a component w/ configuration to include with the cluster deployment
+type KubernetesComponent struct {
+	Name       string                    `json:"name,omitempty"`
+	Enabled    *bool                     `json:"enabled,omitempty"`
+	Containers []KubernetesContainerSpec `json:"containers,omitempty"`
+	Config     map[string]string         `json:"config,omitempty"`
+	Data       string                    `json:"data,omitempty"`
 }
 
 type OrchestratorProfile struct {

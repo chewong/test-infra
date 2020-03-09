@@ -98,15 +98,16 @@ const (
 )
 
 const (
-	ccmImageName                   = "azure-cloud-controller-manager"
-	cnmImageName                   = "azure-cloud-node-manager"
-	cnmAddonName                   = "cloud-node-manager"
-	nodeProblemDetectorAddonName   = "node-problem-detector"
-	hyperkubeImageName             = "hyperkube-amd64"
-	kubeAPIServerImageName         = "kube-apiserver-amd64"
-	kubeControllerManagerImageName = "kube-controller-manager-amd64"
-	kubeSchedulerImageName         = "kube-scheduler-amd64"
-	kubeProxyImageName             = "kube-proxy-amd64"
+	ccmImageName                       = "azure-cloud-controller-manager"
+	cnmImageName                       = "azure-cloud-node-manager"
+	cnmAddonName                       = "cloud-node-manager"
+	nodeProblemDetectorAddonName       = "node-problem-detector"
+	hyperkubeComponentName             = "hyperkube"
+	kubeAPIServerComponentName         = "kube-apiserver"
+	kubeControllerManagerComponentName = "kube-controller-manager"
+	kubeSchedulerComponentName         = "kube-scheduler"
+	kubeProxyComponentName             = "kube-proxy"
+	ccmComponentName                   = "cloud-controller-manager"
 )
 
 const (
@@ -361,13 +362,13 @@ func newAKSEngine() (*aksEngineDeployer, error) {
 		azureEnvironment:                 *aksAzureEnv,
 		azureIdentitySystem:              *aksIdentitySystem,
 		azureCustomCloudURL:              *aksCustomCloudURL,
-		customHyperkubeImage:             getDockerImage(hyperkubeImageName),
 		customCcmImage:                   getDockerImage(ccmImageName),
 		customCnmImage:                   getDockerImage(cnmImageName),
-		customKubeAPIServerImage:         getDockerImage(kubeAPIServerImageName),
-		customKubeControllerManagerImage: getDockerImage(kubeControllerManagerImageName),
-		customKubeProxyImage:             getDockerImage(kubeProxyImageName),
-		customKubeSchedulerImage:         getDockerImage(kubeSchedulerImageName),
+		customHyperkubeImage:             getDockerImage(hyperkubeComponentName + "-amd64"),
+		customKubeAPIServerImage:         getDockerImage(kubeAPIServerComponentName + "-amd64"),
+		customKubeControllerManagerImage: getDockerImage(kubeControllerManagerComponentName + "-amd64"),
+		customKubeProxyImage:             getDockerImage(kubeProxyComponentName + "-amd64"),
+		customKubeSchedulerImage:         getDockerImage(kubeSchedulerComponentName + "-amd64"),
 		aksEngineBinaryPath:              "aks-engine", // use the one in path by default
 		aksDeploymentMethod:              getAKSDeploymentMethod(*aksOrchestratorRelease),
 		useManagedIdentity:               false,
@@ -519,9 +520,8 @@ func (c *aksEngineDeployer) populateAPIModelTemplate() error {
 		v.Properties.OrchestratorProfile.KubernetesConfig.CustomWindowsPackageURL = c.aksCustomWinBinariesURL
 	}
 	if *aksCcm {
-		useCloudControllerManager := true
-		v.Properties.OrchestratorProfile.KubernetesConfig.UseCloudControllerManager = &useCloudControllerManager
-		v.Properties.OrchestratorProfile.KubernetesConfig.CustomCcmImage = c.customCcmImage
+		v.Properties.OrchestratorProfile.KubernetesConfig.UseCloudControllerManager = boolPointer(true)
+		appendComponentToAPIModel(&v, ccmComponentName, c.customCcmImage)
 	}
 	if *aksCnm {
 		cnmAddon := KubernetesAddon{
@@ -551,19 +551,17 @@ func (c *aksEngineDeployer) populateAPIModelTemplate() error {
 
 	switch c.aksDeploymentMethod {
 	case customHyperkube:
-		v.Properties.OrchestratorProfile.KubernetesConfig.CustomKubeAPIServerImage = ""
-		v.Properties.OrchestratorProfile.KubernetesConfig.CustomKubeControllerManagerImage = ""
-		v.Properties.OrchestratorProfile.KubernetesConfig.CustomKubeProxyImage = ""
-		v.Properties.OrchestratorProfile.KubernetesConfig.CustomKubeSchedulerImage = ""
+		appendComponentToAPIModel(&v, kubeAPIServerComponentName, c.customHyperkubeImage)
+		appendComponentToAPIModel(&v, kubeControllerManagerComponentName, c.customHyperkubeImage)
+		appendComponentToAPIModel(&v, kubeProxyComponentName, c.customHyperkubeImage)
+		appendComponentToAPIModel(&v, kubeSchedulerComponentName, c.customHyperkubeImage)
 		v.Properties.OrchestratorProfile.KubernetesConfig.CustomKubeBinaryURL = ""
-		v.Properties.OrchestratorProfile.KubernetesConfig.CustomHyperkubeImage = c.customHyperkubeImage
 	case customK8sComponents:
-		v.Properties.OrchestratorProfile.KubernetesConfig.CustomKubeAPIServerImage = c.customKubeAPIServerImage
-		v.Properties.OrchestratorProfile.KubernetesConfig.CustomKubeControllerManagerImage = c.customKubeControllerManagerImage
-		v.Properties.OrchestratorProfile.KubernetesConfig.CustomKubeProxyImage = c.customKubeProxyImage
-		v.Properties.OrchestratorProfile.KubernetesConfig.CustomKubeSchedulerImage = c.customKubeSchedulerImage
+		appendComponentToAPIModel(&v, kubeAPIServerComponentName, c.customKubeAPIServerImage)
+		appendComponentToAPIModel(&v, kubeControllerManagerComponentName, c.customKubeControllerManagerImage)
+		appendComponentToAPIModel(&v, kubeProxyComponentName, c.customKubeProxyImage)
+		appendComponentToAPIModel(&v, kubeSchedulerComponentName, c.customKubeSchedulerImage)
 		v.Properties.OrchestratorProfile.KubernetesConfig.CustomKubeBinaryURL = c.customKubeBinaryURL
-		v.Properties.OrchestratorProfile.KubernetesConfig.CustomHyperkubeImage = ""
 	}
 
 	if c.isAzureStackCloud() {
@@ -598,6 +596,30 @@ func appendAddonToAPIModel(v *AKSEngineAPIModel, addon KubernetesAddon) {
 	}
 
 	v.Properties.OrchestratorProfile.KubernetesConfig.Addons = append(v.Properties.OrchestratorProfile.KubernetesConfig.Addons, addon)
+}
+
+func appendComponentToAPIModel(v *AKSEngineAPIModel, componentName, image string) {
+	component := KubernetesComponent{
+		Name:    componentName,
+		Enabled: boolPointer(true),
+		Containers: []KubernetesContainerSpec{
+			{
+				Name:  componentName,
+				Image: image,
+			},
+		},
+	}
+
+	// Update the component if it already exists in the API model
+	for i := range v.Properties.OrchestratorProfile.KubernetesConfig.Components {
+		c := &v.Properties.OrchestratorProfile.KubernetesConfig.Components[i]
+		if c.Name == component.Name {
+			c = &component
+			return
+		}
+	}
+
+	v.Properties.OrchestratorProfile.KubernetesConfig.Components = append(v.Properties.OrchestratorProfile.KubernetesConfig.Components, component)
 }
 
 func (c *aksEngineDeployer) getAKSEngine(retry int) error {
