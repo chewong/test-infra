@@ -2,8 +2,8 @@
 
 approvers:
 - andyzhangx
-- feiskyer
 - chewong
+- feiskyer
 
 labels:
 - area/provider/azure

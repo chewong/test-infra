@@ -3,11 +3,11 @@
 approvers:
 - andyzhangx
 - brendandburns
+- chewong
 - feiskyer
 - justaugustus
 - karataliu
 - khenidak
-- chewong
 
 labels:
 - area/provider/azure
