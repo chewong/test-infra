@@ -11,15 +11,108 @@ dashboard_groups:
     - provider-azure-scalability
     - provider-azure-upstream
     - provider-azure-windows
+    - provider-azure-canary
 
 dashboards:
-- name: provider-azure-azuredisk-csi-driver
-- name: provider-azure-azurefile-csi-driver
-- name: provider-azure-blobfuse-csi-driver
-- name: provider-azure-cloud-provider-azure
-- name: provider-azure-dualstack
-- name: provider-azure-periodic
-- name: provider-azure-presubmit
-- name: provider-azure-scalability
-- name: provider-azure-upstream
-- name: provider-azure-windows
+  - name: provider-azure-azuredisk-csi-driver
+  - name: provider-azure-azurefile-csi-driver
+  - name: provider-azure-blobfuse-csi-driver
+  - name: provider-azure-cloud-provider-azure
+  - name: provider-azure-dualstack
+  - name: provider-azure-periodic
+  - name: provider-azure-presubmit
+  - name: provider-azure-scalability
+  - name: provider-azure-upstream
+  - name: provider-azure-windows
+  - name: provider-azure-canary
+    dashboard_tab:
+      - name: test-cloud-provider
+        description:
+        test_group_name: test-cloud-provider
+      - name: test-vhd-upgrade
+        description:
+        test_group_name: test-vhd-upgrade
+      - name: test-conformance
+        description:
+        test_group_name:
+      - name: test-ccm-conformance
+        description:
+        test_group_name: test-conformance
+      - name: test-slow
+        description:
+        test_group_name: test-slow
+      - name: test-ccm-slow
+        description:
+        test_group_name: test-ccm-slow
+      - name: test-azure-disk
+        description:
+        test_group_name: test-azure-disk
+      - name: test-azure-file
+        description:
+        test_group_name: test-azure-file
+      - name: test-dualstack
+        description:
+        test_group_name: test-dualstack
+      - name: test-autoscaling
+        description:
+        test_group_name: test-autoscaling
+      - name: soak-cloud-provider-azure
+        description:
+        test_group_name: soak-cloud-provider-azure
+      - name: soak-conformance
+        description:
+        test_group_name: soak-conformance
+      - name: soak-conformance-ccm
+        description:
+        test_group_name: soak-conformance-ccm
+      - name: soak-slow
+        description:
+        test_group_name: soak-slow
+      - name: soak-slow-ccm
+        description:
+        test_group_name: soak-slow-ccm
+      - name: soak-azure-disk
+        description:
+        test_group_name: soak-azure-disk
+      - name: soak-azure-file
+        description:
+        test_group_name: soak-azure-file
+      - name: soak-autoscaling
+        description:
+        test_group_name: soak-autoscaling
+
+test_groups:
+  - name: test-cloud-provider
+    gcs_prefix: kubernetes-upstream/canary/test-cloud-provider
+  - name: test-upgrade-vhd
+    gcs_prefix: kubernetes-upstream/canary/test-upgrade-vhd
+  - name: test-conformance
+    gcs_prefix: kubernetes-upstream/canary/test-conformance
+  - name: test-ccm-conformance
+    gcs_prefix: kubernetes-upstream/canary/test-ccm-conformance
+  - name: test-slow
+    gcs_prefix: kubernetes-upstream/canary/test-slow
+  - name: test-ccm-slow
+    gcs_prefix: kubernetes-upstream/canary/test-ccm-slow
+  - name: test-azure-disk
+    gcs_prefix: kubernetes-upstream/canary/test-azure-disk
+  - name: test-azure-file
+    gcs_prefix: kubernetes-upstream/canary/test-azure-file
+  - name: test-dualstack
+    gcs_prefix: kubernetes-upstream/canary/test-dualstack
+  - name: test-autoscaling
+    gcs_prefix: kubernetes-upstream/canary/test-autoscaling
+  - name: soak-conformance
+    gcs_prefix: kubernetes-upstream/canary/soak-conformance
+  - name: soak-slow
+    gcs_prefix: kubernetes-upstream/canary/soak-slow
+  - name: soak-azure-disk
+    gcs_prefix: kubernetes-upstream/canary/soak-azure-disk
+  - name: soak-azure-file
+    gcs_prefix: kubernetes-upstream/canary/soak-azure-file
+  - name: soak-ccm-cloud-provider
+    gcs_prefix: kubernetes-upstream/canary/soak-cloud-provider-azure
+  - name: soak-ccm-conformance
+    gcs_prefix: kubernetes-upstream/canary/soak-ccm-conformance
+  - name: soak-autoscaling
+    gcs_prefix: kubernetes-upstream/canary/soak-autoscaling
