@@ -404,7 +404,7 @@ periodics:
     testgrid-tab-name: aks-engine-azure-windows-master-containerd-serial-slow
     testgrid-alert-email: kubernetes-provider-azure@googlegroups.com
     description: Runs serial Windows tests on a Kubernetes cluster running containerd provided by aks-engine (https://github.com/Azure/aks-engine) on Azure cloud
-- interval: 48h
+- interval: 24h
   name: ci-kubernetes-e2e-aks-engine-master-windows-containerd-azuredisk-csi-driver
   decorate: true
   decoration_config:
@@ -464,7 +464,7 @@ periodics:
     testgrid-tab-name: aks-engine-azure-windows-containerd-azuredisk
     testgrid-alert-email: kubernetes-provider-azure@googlegroups.com
     description: "Run Azure Disk CSI driver E2E tests on a Windows cluster using containerd"
-- interval: 48h
+- interval: 24h
   name: ci-kubernetes-e2e-aks-engine-azure-master-windows-containerd-hyperv
   decorate: true
   decoration_config:
@@ -517,7 +517,7 @@ periodics:
     testgrid-tab-name: aks-engine-azure-windows-master-containerd-hyperv
     testgrid-alert-email: kubernetes-provider-azure@googlegroups.com
     description: Runs Windows tests on a Kubernetes cluster running containerd with HyperV isolation provided by aks-engine (https://github.com/Azure/aks-engine) on Azure cloud
-- interval: 48h
+- interval: 24h
   name: ci-kubernetes-e2e-aks-engine-azure-master-windows-containerd-hyperv-serial-slow
   decorate: true
   decoration_config:
@@ -570,7 +570,7 @@ periodics:
     testgrid-tab-name: aks-engine-azure-windows-master-containerd-hyperv-serial-slow
     testgrid-alert-email: kubernetes-provider-azure@googlegroups.com
     description: Runs serial Windows tests on a Kubernetes cluster running containerd with HyperV isolation provided by aks-engine (https://github.com/Azure/aks-engine) on Azure cloud
-- interval: 48h
+- interval: 24h
   name: ci-kubernetes-e2e-azure-disk-windows
   decorate: true
   decoration_config:
@@ -632,7 +632,7 @@ periodics:
     testgrid-tab-name: aks-engine-azure-windows-azure-disk
     testgrid-alert-email: kubernetes-provider-azure@googlegroups.com
     description: Run Azure Disk e2e test with Azure Disk in-tree volume plugin in a Windows cluster.
-- interval: 48h
+- interval: 24h
   name: ci-kubernetes-e2e-azure-file-windows
   decorate: true
   decoration_config:
@@ -694,7 +694,7 @@ periodics:
     testgrid-tab-name: aks-engine-azure-windows-azure-file
     testgrid-alert-email: kubernetes-provider-azure@googlegroups.com
     description: Run Azure File e2e test with Azure File in-tree volume plugin in a Windows cluster.
-- interval: 72h
+- interval: 24h
   name: ci-kubernetes-e2e-aks-engine-azure-master-windows-1903
   decorate: true
   decoration_config:
@@ -748,7 +748,7 @@ periodics:
     testgrid-tab-name: aks-engine-azure-windows-1903-master
     testgrid-alert-email: kubernetes-provider-azure@googlegroups.com
     description: Runs SIG-Windows release tests on K8s clusters provided by aks-engine (https://github.com/Azure/aks-engine) on Azure cloud
-- interval: 72h
+- interval: 24h
   name: ci-kubernetes-e2e-aks-engine-azure-master-windows-1909
   decorate: true
   decoration_config:
@@ -802,7 +802,7 @@ periodics:
     testgrid-tab-name: aks-engine-azure-windows-1909-master
     testgrid-alert-email: kubernetes-provider-azure@googlegroups.com
     description: Runs SIG-Windows release tests on K8s clusters provided by aks-engine (https://github.com/Azure/aks-engine) on Azure cloud
-- interval: 72h
+- interval: 24h
   name: ci-kubernetes-e2e-aks-engine-azure-master-windows-2004
   decorate: true
   decoration_config:
