@@ -162,6 +162,7 @@ type KubernetesConfig struct {
 	UserAssignedID                   string            `json:"userAssignedID,omitempty"`
 	WindowsContainerdURL             string            `json:"windowsContainerdURL,omitempty"`
 	WindowsSdnPluginURL              string            `json:"windowsSdnPluginURL,omitempty"`
+	EtcdVersion                      string            `json:"etcdVersion,omitempty"`
 }
 
 type OrchestratorProfile struct {
